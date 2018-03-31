@@ -2,6 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: cloudsqlproxy
+  namespace: db
 spec:
   replicas: 1
   template:
@@ -20,7 +21,7 @@ spec:
         command:
         - /cloud_sql_proxy
         - -dir=/cloudsql
-        - -instances=jenkins-196609:us-central1:mysql-test1=tcp:3306
+        - -instances=jenkins-196609:us-central1:mysql-test1=tcp:0.0.0.0:3306
         - -credential_file=/secrets/cloudsql/credentials.json
         ports:
         - name: cloudsqlproxy
