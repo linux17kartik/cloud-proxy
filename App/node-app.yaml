@@ -11,7 +11,7 @@ spec:
         app: my-app 
     spec:
       containers:
-        - image: index.docker.io/linux17kartik/node-mysql:v17.1
+        - image: index.docker.io/linux17kartik/node-mysql:v17.2
           name: node-mysql-container
           imagePullPolicy: Always
           ports:
