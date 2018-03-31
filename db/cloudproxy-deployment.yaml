@@ -1,0 +1,46 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: cloudsqlproxy
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: cloudsqlproxy
+    spec:
+      containers:
+       # Make sure to specify image tag in production
+       # Check out the newest version in release page
+       # https://github.com/GoogleCloudPlatform/cloudsql-proxy/releases
+      - image: b.gcr.io/cloudsql-docker/gce-proxy:latest
+       # 'Always' if imageTag is 'latest', else set to 'IfNotPresent'
+        imagePullPolicy: Always
+        name: cloudsqlproxy
+        command:
+        - /cloud_sql_proxy
+        - -dir=/cloudsql
+        - -instances=jenkins-196609:us-central1:mysql-test1=tcp:3306
+        - -credential_file=/secrets/cloudsql/credentials.json
+        ports:
+        - name: cloudsqlproxy
+          containerPort: 3306
+        volumeMounts:
+            - name: cloudsql-oauth-credentials
+              mountPath: /secrets/cloudsql
+              readOnly: true
+            - name: ssl-certs
+              mountPath: /etc/ssl/certs
+            - name: cloudsql
+              mountPath: /cloudsql
+      # [START volumes]
+      volumes:
+        - name: cloudsql-oauth-credentials
+          secret:
+            secretName: cloudsql-oauth-credentials
+        - name: ssl-certs
+          hostPath:
+            path: /etc/ssl/certs
+        - name: cloudsql
+          emptyDir:
+      # [END volumes]
