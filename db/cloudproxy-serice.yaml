@@ -4,7 +4,7 @@ metadata:
   name: sqlproxyservice
   namespace: db
   labels:
-    app: cloudsqlproxy
+    app: sqlproxyservice-label
 spec:
   ports:
   - port: 3306

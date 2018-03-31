@@ -4,7 +4,7 @@ const express = require('express');
 
 var mysql      = require('mysql');
 var connection = mysql.createConnection({
-  host     : 'localhost',
+  host     : 'sqlproxyservice.db',
   user     : 'root',
   password : 'mysql#123',
   database : 'helloworld' 
